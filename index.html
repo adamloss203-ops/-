@@ -1,1 +1,107 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>דקה על זה</title>
 
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        header {
+            background: #111827;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 32px;
+        }
+
+        header p {
+            margin: 8px 0 0;
+            color: #d1d5db;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 18px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        .card h2 {
+            margin-top: 0;
+        }
+
+        button {
+            border: none;
+            background: #2563eb;
+            color: white;
+            padding: 14px 24px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        #message {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>דקה על זה</h1>
+        <p>לומדים משהו חדש — בדקה אחת.</p>
+    </header>
+
+    <main>
+        <div class="card">
+            <h2>ברוכים הבאים 👋</h2>
+            <p>
+                כאן תוכלו ללמוד נושאים חדשים,
+                לענות על שאלות ולראות מה כבר למדתם.
+            </p>
+
+            <button onclick="startLearning()">
+                מתחילים
+            </button>
+
+            <div id="message"></div>
+        </div>
+    </main>
+
+    <script>
+        function startLearning() {
+            document.getElementById("message").textContent =
+                "מעולה! בקרוב נתחיל ללמוד 🚀";
+        }
+    </script>
+
+</body>
+</html>
