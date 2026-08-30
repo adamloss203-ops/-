@@ -57,6 +57,7 @@
         .screen p {
             color: #6b7280;
             font-size: 17px;
+            line-height: 1.7;
         }
 
         .topics {
@@ -66,14 +67,18 @@
             margin-top: 30px;
         }
 
-        .topic {
+        button {
             border: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .topic {
             background: #f3f4f6;
             color: #111827;
             padding: 22px;
             border-radius: 15px;
             font-size: 18px;
-            cursor: pointer;
             transition: 0.2s;
         }
 
@@ -88,6 +93,19 @@
             margin-bottom: 8px;
         }
 
+        .primary {
+            background: #2563eb;
+            color: white;
+            padding: 15px 28px;
+            border-radius: 12px;
+            font-size: 17px;
+            margin-top: 20px;
+        }
+
+        .primary:hover {
+            background: #1d4ed8;
+        }
+
         .hidden {
             display: none;
         }
@@ -96,14 +114,59 @@
             margin-top: 25px;
             background: transparent;
             color: #2563eb;
-            border: none;
-            cursor: pointer;
             font-size: 16px;
+        }
+
+        .reading-box {
+            background: #f9fafb;
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 25px;
+            text-align: right;
+            line-height: 1.9;
+            font-size: 18px;
+        }
+
+        .choice-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 25px;
+        }
+
+        .choice-buttons button {
+            padding: 15px 25px;
+            border-radius: 12px;
+            font-size: 17px;
+        }
+
+        .read-button {
+            background: #e5e7eb;
+        }
+
+        .speak-button {
+            background: #2563eb;
+            color: white;
+        }
+
+        .timer {
+            font-size: 64px;
+            font-weight: bold;
+            margin: 25px 0;
+        }
+
+        .status {
+            font-size: 18px;
+            color: #6b7280;
         }
 
         @media (max-width: 600px) {
             .topics {
                 grid-template-columns: 1fr;
+            }
+
+            .choice-buttons {
+                flex-direction: column;
             }
 
             .screen {
@@ -128,18 +191,18 @@
         <h2>ברוכים הבאים 👋</h2>
 
         <p>
-            כאן תוכלו ללמוד נושאים חדשים,
-            לענות על שאלות ולראות מה כבר למדתם.
+            כאן תוכלו ללמוד נושאים חדשים
+            בצורה קצרה ופשוטה.
         </p>
 
-        <button class="topic" onclick="showTopics()">
+        <button class="primary" onclick="showTopics()">
             🚀 מתחילים
         </button>
 
     </div>
 
 
-    <!-- מסך בחירת נושא -->
+    <!-- בחירת נושא -->
     <div id="topicsScreen" class="screen hidden">
 
         <h2>מה בא לך ללמוד?</h2>
@@ -176,7 +239,7 @@
             </button>
 
             <button class="topic" onclick="chooseTopic('צבא')">
-                <span>🏆</span>
+                <span>🪖</span>
                 צבא
             </button>
 
@@ -189,20 +252,59 @@
     </div>
 
 
-    <!-- מסך אחרי בחירת נושא -->
-    <div id="selectedScreen" class="screen hidden">
+    <!-- מסך הלמידה -->
+    <div id="learningScreen" class="screen hidden">
 
-        <h2 id="selectedTitle"></h2>
-
-        <p>
-            בחירה מעולה! 🎉
-        </p>
+        <h2 id="learningTitle"></h2>
 
         <p>
-            בשלב הבא נבנה כאן את דקת הלמידה שלך.
+            הנה משהו קצר ומעניין על הנושא:
         </p>
 
-        <button class="topic" onclick="goBackToTopics()">
+        <div id="readingText" class="reading-box">
+            הצבא הוא אחד הארגונים המרכזיים במדינות רבות.
+            תפקידו העיקרי הוא להגן על המדינה ועל תושביה.
+            בצבאות שונים קיימות יחידות ותפקידים רבים,
+            החל מלוחמים ועד תפקידים טכנולוגיים, מודיעיניים ורפואיים.
+        </div>
+
+        <div class="choice-buttons">
+
+            <button class="read-button" onclick="showReading()">
+                📖 לקרוא
+            </button>
+
+            <button class="speak-button" onclick="startSpeaking()">
+                🔊 לדבר
+            </button>
+
+        </div>
+
+        <div id="timerArea" class="hidden">
+
+            <div id="timer" class="timer">
+                60
+            </div>
+
+            <div class="status">
+                עכשיו מקשיבים ולומדים...
+            </div>
+
+        </div>
+
+        <div id="afterTimer" class="hidden">
+
+            <p>
+                ⏰ הדקה הסתיימה!
+            </p>
+
+            <button class="primary" onclick="showReading()">
+                📖 לראות את קטע הקריאה
+            </button>
+
+        </div>
+
+        <button class="back" onclick="goBackToTopics()">
             ← בחירת נושא אחר
         </button>
 
@@ -212,6 +314,10 @@
 
 
 <script>
+
+    let timerInterval;
+    let currentTopic = "";
+
 
     function showTopics() {
 
@@ -224,12 +330,121 @@
 
     function chooseTopic(topic) {
 
+        currentTopic = topic;
+
         document.getElementById("topicsScreen").classList.add("hidden");
 
-        document.getElementById("selectedScreen").classList.remove("hidden");
+        document.getElementById("learningScreen").classList.remove("hidden");
 
-        document.getElementById("selectedTitle").textContent =
-            "בחרת: " + topic;
+        document.getElementById("learningTitle").textContent =
+            "דקה על זה — " + topic;
+
+        document.getElementById("readingText").textContent =
+            getTopicText(topic);
+
+    }
+
+
+    function getTopicText(topic) {
+
+        const texts = {
+
+            "מדע":
+                "המדע עוזר לנו להבין איך העולם עובד. " +
+                "מדענים חוקרים תופעות בטבע, מבצעים ניסויים " +
+                "ומנסים למצוא הסברים המבוססים על ראיות.",
+
+            "גאוגרפיה":
+                "גאוגרפיה עוסקת בכדור הארץ, במדינות, באקלים, " +
+                "בנופים ובאופן שבו בני אדם חיים במקומות שונים בעולם.",
+
+            "היסטוריה":
+                "היסטוריה היא חקר האירועים והתהליכים שעברו על בני האדם " +
+                "במהלך השנים. באמצעותה אפשר להבין כיצד העולם השתנה.",
+
+            "טכנולוגיה":
+                "טכנולוגיה היא השימוש בידע ובכלים כדי לפתור בעיות " +
+                "וליצור דברים חדשים. מחשבים, טלפונים ובינה מלאכותית " +
+                "הם דוגמאות לטכנולוגיות שמשפיעות על חיי היום-יום.",
+
+            "ידע כללי":
+                "ידע כללי כולל עובדות ורעיונות ממגוון תחומים, " +
+                "כמו מדע, היסטוריה, תרבות, גאוגרפיה וטכנולוגיה.",
+
+            "צבא":
+                "הצבא הוא אחד הארגונים המרכזיים במדינות רבות. " +
+                "תפקידו העיקרי הוא להגן על המדינה ועל תושביה. " +
+                "בצבאות שונים קיימות יחידות ותפקידים רבים, " +
+                "החל מלוחמים ועד תפקידים טכנולוגיים, מודיעיניים ורפואיים."
+
+        };
+
+        return texts[topic] || texts["ידע כללי"];
+    }
+
+
+    function showReading() {
+
+        document.getElementById("readingText").classList.remove("hidden");
+
+        document.getElementById("timerArea").classList.add("hidden");
+
+        document.getElementById("afterTimer").classList.add("hidden");
+
+    }
+
+
+    function startSpeaking() {
+
+        clearInterval(timerInterval);
+
+        document.getElementById("readingText").classList.add("hidden");
+
+        document.getElementById("afterTimer").classList.add("hidden");
+
+        document.getElementById("timerArea").classList.remove("hidden");
+
+        let timeLeft = 60;
+
+        document.getElementById("timer").textContent = timeLeft;
+
+        const text = getTopicText(currentTopic);
+
+        if ("speechSynthesis" in window) {
+
+            window.speechSynthesis.cancel();
+
+            const speech = new SpeechSynthesisUtterance(text);
+
+            speech.lang = "he-IL";
+
+            speech.rate = 0.9;
+
+            window.speechSynthesis.speak(speech);
+
+        }
+
+        timerInterval = setInterval(function() {
+
+            timeLeft--;
+
+            document.getElementById("timer").textContent = timeLeft;
+
+            if (timeLeft <= 0) {
+
+                clearInterval(timerInterval);
+
+                if ("speechSynthesis" in window) {
+                    window.speechSynthesis.cancel();
+                }
+
+                document.getElementById("timerArea").classList.add("hidden");
+
+                document.getElementById("afterTimer").classList.remove("hidden");
+
+            }
+
+        }, 1000);
 
     }
 
@@ -245,7 +460,13 @@
 
     function goBackToTopics() {
 
-        document.getElementById("selectedScreen").classList.add("hidden");
+        clearInterval(timerInterval);
+
+        if ("speechSynthesis" in window) {
+            window.speechSynthesis.cancel();
+        }
+
+        document.getElementById("learningScreen").classList.add("hidden");
 
         document.getElementById("topicsScreen").classList.remove("hidden");
 
