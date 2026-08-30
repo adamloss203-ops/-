@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>דקה על זה</title>
 
     <style>
@@ -20,7 +21,7 @@
         header {
             background: #111827;
             color: white;
-            padding: 20px;
+            padding: 22px;
             text-align: center;
         }
 
@@ -35,73 +36,222 @@
         }
 
         main {
-            max-width: 800px;
+            max-width: 850px;
             margin: 40px auto;
             padding: 20px;
         }
 
-        .card {
+        .screen {
             background: white;
-            border-radius: 18px;
-            padding: 30px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
             text-align: center;
         }
 
-        .card h2 {
+        .screen h2 {
             margin-top: 0;
+            font-size: 28px;
         }
 
-        button {
+        .screen p {
+            color: #6b7280;
+            font-size: 17px;
+        }
+
+        .topics {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .topic {
             border: none;
-            background: #2563eb;
-            color: white;
-            padding: 14px 24px;
-            border-radius: 10px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #1d4ed8;
-        }
-
-        #message {
-            margin-top: 20px;
+            background: #f3f4f6;
+            color: #111827;
+            padding: 22px;
+            border-radius: 15px;
             font-size: 18px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .topic:hover {
+            transform: translateY(-2px);
+            background: #e5e7eb;
+        }
+
+        .topic span {
+            display: block;
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .back {
+            margin-top: 25px;
+            background: transparent;
+            color: #2563eb;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        @media (max-width: 600px) {
+            .topics {
+                grid-template-columns: 1fr;
+            }
+
+            .screen {
+                padding: 25px 18px;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <header>
-        <h1>דקה על זה</h1>
-        <p>לומדים משהו חדש — בדקה אחת.</p>
-    </header>
+<header>
+    <h1>דקה על זה</h1>
+    <p>לומדים משהו חדש — בדקה אחת.</p>
+</header>
 
-    <main>
-        <div class="card">
-            <h2>ברוכים הבאים 👋</h2>
-            <p>
-                כאן תוכלו ללמוד נושאים חדשים,
-                לענות על שאלות ולראות מה כבר למדתם.
-            </p>
+<main>
 
-            <button onclick="startLearning()">
-                מתחילים
+    <!-- מסך פתיחה -->
+    <div id="welcomeScreen" class="screen">
+
+        <h2>ברוכים הבאים 👋</h2>
+
+        <p>
+            כאן תוכלו ללמוד נושאים חדשים,
+            לענות על שאלות ולראות מה כבר למדתם.
+        </p>
+
+        <button class="topic" onclick="showTopics()">
+            🚀 מתחילים
+        </button>
+
+    </div>
+
+
+    <!-- מסך בחירת נושא -->
+    <div id="topicsScreen" class="screen hidden">
+
+        <h2>מה בא לך ללמוד?</h2>
+
+        <p>
+            בחר נושא ונבנה לך דקת למידה.
+        </p>
+
+        <div class="topics">
+
+            <button class="topic" onclick="chooseTopic('מדע')">
+                <span>🧠</span>
+                מדע
             </button>
 
-            <div id="message"></div>
-        </div>
-    </main>
+            <button class="topic" onclick="chooseTopic('גאוגרפיה')">
+                <span>🌍</span>
+                גאוגרפיה
+            </button>
 
-    <script>
-        function startLearning() {
-            document.getElementById("message").textContent =
-                "מעולה! בקרוב נתחיל ללמוד 🚀";
-        }
-    </script>
+            <button class="topic" onclick="chooseTopic('היסטוריה')">
+                <span>📜</span>
+                היסטוריה
+            </button>
+
+            <button class="topic" onclick="chooseTopic('טכנולוגיה')">
+                <span>💻</span>
+                טכנולוגיה
+            </button>
+
+            <button class="topic" onclick="chooseTopic('ידע כללי')">
+                <span>🎯</span>
+                ידע כללי
+            </button>
+
+            <button class="topic" onclick="chooseTopic('ספורט')">
+                <span>🏆</span>
+                ספורט
+            </button>
+
+        </div>
+
+        <button class="back" onclick="goBack()">
+            ← חזרה
+        </button>
+
+    </div>
+
+
+    <!-- מסך אחרי בחירת נושא -->
+    <div id="selectedScreen" class="screen hidden">
+
+        <h2 id="selectedTitle"></h2>
+
+        <p>
+            בחירה מעולה! 🎉
+        </p>
+
+        <p>
+            בשלב הבא נבנה כאן את דקת הלמידה שלך.
+        </p>
+
+        <button class="topic" onclick="goBackToTopics()">
+            ← בחירת נושא אחר
+        </button>
+
+    </div>
+
+</main>
+
+
+<script>
+
+    function showTopics() {
+
+        document.getElementById("welcomeScreen").classList.add("hidden");
+
+        document.getElementById("topicsScreen").classList.remove("hidden");
+
+    }
+
+
+    function chooseTopic(topic) {
+
+        document.getElementById("topicsScreen").classList.add("hidden");
+
+        document.getElementById("selectedScreen").classList.remove("hidden");
+
+        document.getElementById("selectedTitle").textContent =
+            "בחרת: " + topic;
+
+    }
+
+
+    function goBack() {
+
+        document.getElementById("topicsScreen").classList.add("hidden");
+
+        document.getElementById("welcomeScreen").classList.remove("hidden");
+
+    }
+
+
+    function goBackToTopics() {
+
+        document.getElementById("selectedScreen").classList.add("hidden");
+
+        document.getElementById("topicsScreen").classList.remove("hidden");
+
+    }
+
+</script>
 
 </body>
 </html>
